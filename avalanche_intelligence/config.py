@@ -47,6 +47,24 @@ class RSSConfig:
 
 
 @dataclass
+class GitHubConfig:
+    """GitHub API configuration."""
+    enabled: bool = False
+    access_token: str = ""
+    organizations: List[str] = field(default_factory=list)
+    repositories: List[str] = field(default_factory=list)
+    rate_limit_per_hour: int = 50
+
+
+@dataclass
+class OnchainConfig:
+    """On-chain data configuration."""
+    enabled: bool = False
+    rpc_url: str = ""
+    rate_limit_per_second: int = 10
+
+
+@dataclass
 class StorageConfig:
     """Storage configuration."""
     retention_days: int = 90
@@ -81,6 +99,8 @@ class Config:
     reddit: RedditConfig = field(default_factory=RedditConfig)
     discord: DiscordConfig = field(default_factory=DiscordConfig)
     rss: RSSConfig = field(default_factory=RSSConfig)
+    github: GitHubConfig = field(default_factory=GitHubConfig)
+    onchain: OnchainConfig = field(default_factory=OnchainConfig)
 
     # Systems
     storage: StorageConfig = field(default_factory=StorageConfig)
@@ -107,6 +127,8 @@ class Config:
             config.reddit = RedditConfig(**sources.get("reddit", {}))
             config.discord = DiscordConfig(**sources.get("discord", {}))
             config.rss = RSSConfig(**sources.get("news", sources.get("rss", {})))
+            config.github = GitHubConfig(**sources.get("github", {}))
+            config.onchain = OnchainConfig(**sources.get("onchain", {}))
 
         # Load system configs
         if "storage" in data:
@@ -143,6 +165,16 @@ class Config:
         if self.discord.webhook_url.startswith("${"):
             env_var = self.discord.webhook_url[2:-1]
             self.discord.webhook_url = os.environ.get(env_var, "")
+
+        # GitHub
+        if self.github.access_token.startswith("${"):
+            env_var = self.github.access_token[2:-1]
+            self.github.access_token = os.environ.get(env_var, "")
+
+        # On-chain
+        if self.onchain.rpc_url.startswith("${"):
+            env_var = self.onchain.rpc_url[2:-1]
+            self.onchain.rpc_url = os.environ.get(env_var, "")
 
 
 class ConfigManager:

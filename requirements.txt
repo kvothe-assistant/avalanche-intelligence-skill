@@ -23,6 +23,7 @@ playwright>=1.40
 # API clients
 tweepy>=4.14
 praw>=7.7
+discord.py>=2.3
 
 # RSS feeds
 feedparser>=6.0

@@ -8,6 +8,10 @@ import os
 from .config import Config
 from .collectors.twitter import TwitterCollector
 from .collectors.reddit import RedditCollector
+from .collectors.discord import DiscordCollector
+from .collectors.github import GitHubCollector
+from .collectors.rss import RSSCollector
+from .collectors.onchain import OnchainCollector
 
 
 class IntelligenceEngine:
@@ -32,6 +36,22 @@ class IntelligenceEngine:
         # Reddit
         if self.config.reddit.enabled and self.config.reddit.client_id:
             self.collectors["reddit"] = RedditCollector(self.config.reddit)
+
+        # Discord
+        if self.config.discord.enabled and self.config.discord.bot_token:
+            self.collectors["discord"] = DiscordCollector(self.config.discord)
+
+        # GitHub
+        if self.config.github.enabled and self.config.github.access_token:
+            self.collectors["github"] = GitHubCollector(self.config.github)
+
+        # RSS
+        if self.config.rss.enabled and self.config.rss.feeds:
+            self.collectors["rss"] = RSSCollector(self.config.rss)
+
+        # On-chain
+        if self.config.onchain.enabled and self.config.onchain.rpc_url:
+            self.collectors["onchain"] = OnchainCollector(self.config.onchain)
 
     def _init_directories(self):
         """Create necessary data directories."""

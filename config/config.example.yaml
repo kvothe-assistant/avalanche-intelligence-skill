@@ -50,6 +50,25 @@ sources:
       - "https://coindesk.com/arc/outboundfeeds/rss/tag/avalanche"
     rate_limit_per_hour: 20
 
+  github:
+    enabled: false
+    access_token: "${GITHUB_ACCESS_TOKEN}"
+    organizations:
+      - "avalanche-foundation"
+      - "avalanche-labs"
+      - "ava-labs"
+    repositories:
+      - "ava-labs/avalanchejs"
+      - "ava-labs/coreth"
+    rate_limit_per_hour: 50
+
+  onchain:
+    enabled: false
+    rpc_url: "${AVALANCHE_RPC_URL}"
+    # Mainnet: https://api.avax.network/ext/bc/C/rpc
+    # Testnet: https://api.avax-test.network/ext/bc/C/rpc
+    rate_limit_per_second: 10
+
 storage:
   retention_days: 90
   vector_db_path: "data/vector_db"
