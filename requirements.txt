@@ -9,9 +9,15 @@ rich>=13.0
 vaderSentiment>=3.3
 transformers>=4.35
 torch>=2.1
+sentence-transformers>=2.2
 
 # Storage
 chromadb>=0.4
+influxdb-client>=1.38
+
+# NLP
+spacy>=3.7
+# Install spaCy model: python -m spacy download en_core_web_sm
 
 # Data processing
 pandas>=2.1
@@ -27,12 +33,6 @@ discord.py>=2.3
 
 # RSS feeds
 feedparser>=6.0
-
-# Optional: Time series (influxdb-client)
-# influxdb-client>=1.38
-
-# Optional: Document store (pymongo)
-# pymongo>=4.6
 
 # Development dependencies
 pytest>=7.4
