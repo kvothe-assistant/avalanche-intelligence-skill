@@ -1,25 +1,21 @@
 # Avalanche Intelligence Skill
 
-## Overview
+## ⚠️ IMPORTANT: This is a **Standalone Project**
 
-The **Avalanche Intelligence** skill provides real-time monitoring, analysis, and intelligence reporting on the Avalanche blockchain ecosystem through OpenClaw.
-
-This skill aggregates data from multiple sources:
-- **Social:** Twitter/X, Reddit, Discord
-- **News:** RSS feeds from crypto outlets
-- **Development:** GitHub repositories and events
-- **On-chain:** Avalanche C-Chain blocks and transactions
-- **Analysis:** Multi-model sentiment, entity extraction, trend detection
+This is **NOT** a regular OpenClaw skill to be used in-place. The Avalanche Intelligence tool has its own **standalone repository** and should be cloned separately.
 
 ---
 
-## Quick Start
+## 📦 Installation (Choose Your Method)
 
-### Installation
+### Method 1: Standalone Project (Recommended)
+
+Clone and install as an independent project:
 
 ```bash
-# Navigate to your workspace
-cd /home/kvothe/.openclaw/workspace/skills/avalanche-intelligence
+# Clone from GitHub
+git clone https://github.com/kvothe-assistant/avalanche-intelligence-skill.git
+cd avalanche-intelligence-skill
 
 # Install dependencies
 pip install -r requirements.txt
@@ -28,7 +24,124 @@ pip install -r requirements.txt
 python -m avalanche_intelligence init
 ```
 
-### Configuration
+### Method 2: As OpenClaw Integration (Optional)
+
+Use it through your OpenClaw installation:
+
+```bash
+# Navigate to workspace
+cd /home/kvothe/.openclaw/workspace/skills
+
+# Clone into skills directory
+git clone https://github.com/kvothe-assistant/avalanche-intelligence-skill.git avalanche-intelligence
+
+# Install
+cd avalanche-intelligence
+pip install -e .
+
+# Use via CLI
+avalanche-intelligence scan --hours 24
+```
+
+**Note:** When using as an OpenClaw skill, the tool is still a standalone application with its own configuration and data directories.
+
+---
+
+## Overview
+
+The **Avalanche Intelligence** project is a **standalone Python application** that provides real-time monitoring, analysis, and intelligence reporting on the Avalanche blockchain ecosystem.
+
+It can be used with OpenClaw, but it operates as an **independent tool** with its own lifecycle, dependencies, and configuration.
+
+This project aggregates data from multiple sources:
+
+- **Social:** Twitter/X, Reddit, Discord
+- **News:** RSS feeds from crypto outlets
+- **Development:** GitHub repositories and events
+- **On-chain:** Avalanche C-Chain blocks and transactions
+- **Analysis:** Multi-model sentiment, entity extraction, trend detection
+
+---
+
+## 📊 Project Structure
+
+The Avalanche Intelligence project has a **standalone architecture** with:
+
+### Core Components
+- **CLI Interface:** 7 commands (init, test, scan, search, report, status, watch)
+- **Intelligence Engine:** Coordinates all collectors and analyzers
+- **Configuration System:** YAML-based with environment variable support
+
+### Data Layer (6 Collectors)
+- **Twitter** - API v2 with keyword/account monitoring
+- **Reddit** - PRAW with multi-subreddit support
+- **Discord** - Real-time bot with webhook alerts
+- **GitHub** - REST API with event tracking
+- **RSS** - Multi-feed aggregator
+- **On-chain** - Avalanche C-Chain RPC integration
+
+### Processing Layer (4 Analyzers)
+- **Sentiment Analyzer** - Multi-model (VADER, FinBERT, LLM)
+- **Entity Extractor** - Named entity recognition + Avalanche ecosystem
+- **Trend Detector** - Spike detection, momentum, anomaly detection
+- **Deduplicator** - Vector similarity with ChromaDB
+
+### Storage Layer (3 Backends)
+- **Vector Database** - ChromaDB for semantic search
+- **Time-Series Database** - InfluxDB for metrics
+- **Document Store** - SQLite for structured data
+
+### Alert Layer (2 Components)
+- **Alert Manager** - Rule-based triggering and routing
+- **Discord Notifier** - Webhook-based alerts with rich embeds
+
+---
+
+## 🚀 Quick Start
+
+### Step 1: Clone and Install
+
+```bash
+# Clone from GitHub
+git clone https://github.com/kvothe-assistant/avalanche-intelligence-skill.git
+cd avalanche-intelligence-skill
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Step 2: Configure
+
+```bash
+# Initialize configuration
+python -m avalanche_intelligence init
+
+# Edit config with your API keys
+nano config/config.yaml
+```
+
+### Step 3: Run
+
+```bash
+# Test installation
+python -m avalanche_intelligence test
+
+# Scan data (last 24 hours)
+python -m avalanche_intelligence scan --hours 24
+
+# Search for topics
+python -m avalanche_intelligence search "spruce testnet"
+
+# Generate report
+python -m avalanche_intelligence report --timeframe 24h
+
+# Start continuous monitoring
+python -m avalanche_intelligence watch --daemon --interval 900
+```
+
+---
+
+## ⚙️ Configuration
 
 Edit `config/config.yaml` with your API keys:
 
@@ -36,26 +149,26 @@ Edit `config/config.yaml` with your API keys:
 sources:
   twitter:
     enabled: true
-    bearer_token: "YOUR_TWITTER_BEARER_TOKEN"
+    bearer_token: "${TWITTER_BEARER_TOKEN}"
     track_keywords: ["avalanche", "avax", "subnet"]
     follow_accounts: ["avalancheavax", "kevinsekniqi"]
 
   reddit:
     enabled: true
-    client_id: "YOUR_REDDIT_CLIENT_ID"
-    client_secret: "YOUR_REDDIT_CLIENT_SECRET"
+    client_id: "${REDDIT_CLIENT_ID}"
+    client_secret: "${REDDIT_CLIENT_SECRET}"
     subreddits: ["avalancheavax", "defi", "cryptocurrency"]
 
   discord:
     enabled: true
-    bot_token: "YOUR_DISCORD_BOT_TOKEN"
-    webhook_url: "YOUR_DISCORD_WEBHOOK_URL"
+    bot_token: "${DISCORD_BOT_TOKEN}"
+    webhook_url: "${DISCORD_WEBHOOK_URL}"
     guilds: ["Avalanche"]
     channels: ["announcements", "tech-talk"]
 
   github:
     enabled: true
-    access_token: "YOUR_GITHUB_TOKEN"
+    access_token: "${GITHUB_ACCESS_TOKEN}"
     organizations: ["avalanche-foundation", "avalanche-labs"]
 
   rss:
@@ -66,7 +179,7 @@ sources:
 
   onchain:
     enabled: true
-    rpc_url: "https://api.avax.network/ext/bc/C/rpc"
+    rpc_url: "${AVALANCHE_RPC_URL}"
 
 alerts:
   enabled_channels: ["discord"]
@@ -79,220 +192,58 @@ alerts:
 
 ---
 
-## Usage in OpenClaw
+## 🎯 CLI Commands
 
-### Basic Commands
-
-#### 1. Test Installation
+### Core Commands
 
 ```bash
-avalanche-intelligence test
+avalanche-intelligence init              # Initialize configuration
+avalanche-intelligence test              # Test installation
+avalanche-intelligence status            # Show system status
+avalanche-intelligence scan --hours 24  # Collect data
+avalanche-intelligence search "query"     # Search data
+avalanche-intelligence report             # Generate report
+avalanche-intelligence watch --daemon    # Continuous monitoring
 ```
 
-Tests that all dependencies are installed and configuration is valid.
+### Command Options
 
----
-
-#### 2. Scan Recent Data
-
+#### `scan`
 ```bash
-# Scan last 24 hours from all sources
-avalanche-intelligence scan --hours 24
-
-# Scan specific sources only
-avalanche-intelligence scan --hours 24 --sources twitter,reddit
-
-# Scan and save report
-avalanche-intelligence scan --hours 24 --output reports/scan.md
+--hours N          # Hours to scan (default: 24)
+--sources X,Y,Z     # Specific sources (default: all)
+--output FILE      # Save scan results
 ```
 
----
-
-#### 3. Search Data
-
+#### `search`
 ```bash
-# Search across all collected data
-avalanche-intelligence search "spruce testnet"
-
-# Search specific source
-avalanche-intelligence search "defi" --source reddit
-
-# Deep search with more context
-avalanche-intelligence search "avalanche9000" --deep
+--query "text"     # Search query
+--source NAME       # Filter by source (default: all)
+--deep             # More results with context
 ```
 
----
-
-#### 4. Generate Reports
-
+#### `report`
 ```bash
-# Daily report (markdown)
-avalanche-intelligence report --timeframe 24h --format markdown
-
-# Weekly report (JSON)
-avalanche-intelligence report --timeframe 7d --format json
-
-# Monthly report (HTML)
-avalanche-intelligence report --timeframe 30d --format html --output reports/monthly.html
+--timeframe 24h    # Time period (24h, 7d, 30d)
+--format markdown    # Output format (markdown, json, html)
+--output FILE      # Save report
 ```
 
----
-
-#### 5. System Status
-
+#### `watch`
 ```bash
-avalanche-intelligence status
-```
-
-Shows:
-- Active collectors
-- Total posts collected
-- Total signals detected
-- Storage statistics
-- Collector status
-
----
-
-#### 6. Continuous Monitoring
-
-```bash
-# Start watch daemon (runs in background)
-avalanche-intelligence watch --daemon --interval 900
-
-# Check every 15 minutes (default)
-avalanche-intelligence watch --daemon
-
-# Check every 5 minutes
-avalanche-intelligence watch --daemon --interval 300
+--daemon           # Run as background daemon
+--interval 900      # Check interval in seconds (default: 15m)
 ```
 
 ---
 
-### Advanced Workflows
-
-#### Workflow 1: Track Trending Topic
-
-```bash
-# 1. Scan recent data
-avalanche-intelligence scan --hours 6 --sources twitter,reddit
-
-# 2. Search for topic mentions
-avalanche-intelligence search "spruce testnet" --deep
-
-# 3. Generate sentiment report
-avalanche-intelligence report --timeframe 6h
-```
-
----
-
-#### Workflow 2: Monitor Ecosystem Events
-
-```bash
-# 1. Start continuous monitoring
-avalanche-intelligence watch --daemon --interval 900
-
-# 2. Check alerts periodically
-avalanche-intelligence status
-
-# 3. Search for specific events
-avalanche-intelligence search "acp proposal" --source github
-```
-
----
-
-#### Workflow 3: Analyze Sentiment Trends
-
-```bash
-# 1. Collect recent social data
-avalanche-intelligence scan --hours 24 --sources twitter,reddit,discord
-
-# 2. Generate report
-avalanche-intelligence report --timeframe 24h --format markdown --output reports/sentiment.md
-
-# 3. Review sentiment analysis
-# (View report for aggregated sentiment scores)
-```
-
----
-
-## Output Examples
-
-### Scan Output
-
-```
-Collecting from twitter...
-  ✓ 142 items collected in 5.3s
-
-Collecting from reddit...
-  ✓ 87 items collected in 3.2s
-
-Collecting from github...
-  ✓ 34 items collected in 2.1s
-
-╔════════════════════════════════════════════════╗
-║  Source            │ Posts │ Signals │ Duration   ║
-╠════════════════════════════════════════════════╣
-║  twitter          │   142 │        0 │      5.3s   ║
-║  reddit           │    87 │        0 │      3.2s   ║
-║  github           │    34 │        0 │      2.1s   ║
-╚══════════════════════════════════════════════════╝
-
-✓ Scan complete!
-Data saved to: data/raw/scan_20260221-103015.json
-```
-
----
-
-### Search Output
-
-```
-Searching: avalanche subnet launch...
-Found 15 results:
-
-┌─────────────┬────────┬─────────────────────────────────────┬─────────────┐
-│ Relevance   │ Source │ Content Preview                 │ Date        │
-├─────────────┼────────┼─────────────────────────────────────┼─────────────┤
-│ 0.95       │ twitter │ New subnet launched on Fuji testnet... │ 2026-02-21 │
-│ 0.82       │ reddit   │ Avalanche subnet announcement: ...     │ 2026-02-21 │
-│ 0.75       │ github   │ Created new subnet template ...      │ 2026-02-20 │
-└─────────────┴────────┴─────────────────────────────────────┴─────────────┘
-```
-
----
-
-### Status Output
-
-```
-📊 Avalanche Intelligence Status
-
-📊 System:
-  Active Sources: 5
-  Total Posts: 12,847
-  Signals Found: 23
-
-💾 Storage:
-  Raw Data: 145.2 MB
-  Processed: 234.1 MB
-  Vector DB: initialized
-
-🔍 Collectors:
-  ✓ twitter: Active
-  ✓ reddit: Active
-  ✓ discord: Active
-  ✓ github: Active
-  ✓ rss: Active
-  ✗ onchain: Inactive
-```
-
----
-
-## Data Sources Explained
+## 📊 Data Sources
 
 ### Twitter/X
 - **API:** Twitter API v2
-- **Data:** Tweets, replies, mentions, engagement
+- **Data:** Tweets, replies, mentions, engagement metrics
 - **Rate Limit:** 300 requests/hour (configurable)
-- **Features:** Sentiment, entities, influence scoring
+- **Features:** Sentiment analysis, entity extraction, influence scoring
 
 ### Reddit
 - **API:** PRAW (Python Reddit API)
@@ -307,7 +258,7 @@ Found 15 results:
 
 ### GitHub
 - **API:** GitHub REST API v3
-- **Data:** Events (Push, PR, Issue, Release, etc.)
+- **Data:** Events (Push, PR, Issue, Release, etc.), repositories
 - **Features:** Organization monitoring, repository search, activity tracking
 
 ### RSS Feeds
@@ -322,10 +273,10 @@ Found 15 results:
 
 ---
 
-## Analysis Capabilities
+## 🧠 Analysis Capabilities
 
 ### Sentiment Analysis
-- **Models:** VADER, FinBERT, LLM (composite)
+- **Models:** VADER, FinBERT, LLM (composite scoring)
 - **Output:** Score (-1 to +1), label (positive/negative/neutral), confidence
 - **Batch Processing:** Analyze multiple texts efficiently
 
@@ -346,7 +297,26 @@ Found 15 results:
 
 ---
 
-## Alert Types
+## 💾 Storage Architecture
+
+### Vector Database (ChromaDB)
+- **Purpose:** Semantic search and similarity matching
+- **Use Cases:** Content deduplication, intelligent search, entity linking
+- **Path:** `data/vector_db/`
+
+### Time-Series Database (InfluxDB)
+- **Purpose:** Metrics storage and analytics
+- **Use Cases:** Trend detection, anomaly detection, time-series queries
+- **Path:** Remote server (configured)
+
+### Document Store (SQLite)
+- **Purpose:** Structured data persistence
+- **Use Cases:** Documents, signals, projects storage, full-text search
+- **Path:** `data/documents/intelligence.db`
+
+---
+
+## 🚨 Alert Types
 
 ### Trend Spike
 Triggered when an entity's mentions spike significantly above baseline.
@@ -368,55 +338,70 @@ Triggered when major institution partnerships are announced.
 
 ---
 
-## Storage Architecture
+## 🔧 Best Practices
 
-### Vector Database (ChromaDB)
-- **Purpose:** Semantic search and similarity matching
-- **Use Cases:** Content deduplication, intelligent search, entity linking
-- **Path:** `data/vector_db/`
-
-### Time-Series Database (InfluxDB)
-- **Purpose:** Metrics storage and analytics
-- **Use Cases:** Trend detection, anomaly detection, time-series queries
-- **Path:** Remote server (configured)
-
-### Document Store (SQLite)
-- **Purpose:** Structured data persistence
-- **Use Cases:** Documents, signals, projects storage, full-text search
-- **Path:** `data/documents/intelligence.db`
-
----
-
-## Best Practices
-
-### 1. API Keys Management
+### API Keys Management
 - Store API keys in environment variables, not in config files
 - Use different tokens for different environments (dev/prod)
 - Rotate tokens regularly for security
 
-### 2. Rate Limiting
+### Rate Limiting
 - Respect platform rate limits
 - Use batch operations when possible
 - Implement backoff strategies for failed requests
 
-### 3. Storage Management
+### Storage Management
 - Set appropriate retention periods (default: 90 days)
 - Regularly clean up old data
 - Monitor database sizes and performance
 
-### 4. Alert Thresholds
+### Alert Thresholds
 - Adjust confidence thresholds based on use case
 - Set appropriate trigger frequencies
 - Test alert rules before production deployment
 
-### 5. Monitoring
+### Monitoring
 - Use continuous monitoring for critical alerts
 - Monitor storage sizes and disk usage
 - Track collector uptime and error rates
 
 ---
 
-## Troubleshooting
+## 📈 Usage Examples
+
+### Example 1: Daily Monitoring
+
+```bash
+# Scan recent data
+avalanche-intelligence scan --hours 24
+
+# Generate report
+avalanche-intelligence report --timeframe 24h --format markdown --output reports/daily.md
+```
+
+### Example 2: Trend Research
+
+```bash
+# Scan last 24 hours
+avalanche-intelligence scan --hours 24 --sources twitter,reddit
+
+# Search for specific topics
+avalanche-intelligence search "subnet launch" --deep
+```
+
+### Example 3: Continuous Monitoring
+
+```bash
+# Start watch daemon
+avalanche-intelligence watch --daemon --interval 900
+
+# Check system status
+avalanche-intelligence status
+```
+
+---
+
+## 🐛 Troubleshooting
 
 ### Common Issues
 
@@ -428,6 +413,11 @@ pip install vaderSentiment
 **"ChromaDB error"**
 ```bash
 pip install chromadb
+```
+
+**"spaCy model not found"**
+```bash
+python -m spacy download en_core_web_sm
 ```
 
 **"Discord bot token invalid"**
@@ -442,38 +432,38 @@ pip install chromadb
 
 ---
 
-## Configuration Reference
+## 📋 Configuration Reference
 
 ### Analysis Configuration
 ```yaml
 analysis:
-  sentiment_model: "vader"        # Options: vader, finbert, llm
-  entity_extraction: true             # Enable entity extraction
-  trend_detection: true               # Enable trend detection
-  deduplication_threshold: 0.85      # Similarity threshold (0-1)
+  sentiment_model: "vader"      # Options: vader, finbert, llm
+  entity_extraction: true
+  trend_detection: true
+  deduplication_threshold: 0.85
 ```
 
 ### Storage Configuration
 ```yaml
 storage:
-  retention_days: 90                  # Data retention period
-  vector_db_path: "data/vector_db"  # ChromaDB location
-  document_store_path: "data/documents" # SQLite location
+  retention_days: 90
+  vector_db_path: "data/vector_db"
+  document_store_path: "data/documents"
 ```
 
 ### Alert Configuration
 ```yaml
 alerts:
-  enabled_channels: ["discord"]       # Output channels
+  enabled_channels: ["discord"]
   triggers: ["trend_spike", "high_confidence", ...]
-  min_confidence: 0.7                 # Minimum confidence (0-1)
+  min_confidence: 0.7
 ```
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
-To extend the skill:
+To extend the project:
 
 1. **Add a new collector:** Inherit from `BaseCollector` and implement `collect()` and `search()`
 2. **Add a new analyzer:** Create a new class in `analyzers/` directory
@@ -484,7 +474,7 @@ See `CONTRIBUTING.md` for detailed guidelines.
 
 ---
 
-## Documentation
+## 📚 Documentation
 
 - **Full Documentation:** https://github.com/kvothe-assistant/avalanche-intelligence-skill
 - **API Docs:** See inline docstrings in each module
@@ -492,23 +482,28 @@ See `CONTRIBUTING.md` for detailed guidelines.
 
 ---
 
-## License
+## 📜 License
 
 MIT License - See `LICENSE` file
 
 ---
 
-## Quick Reference
+## 🔗 Repository
+
+**URL:** https://github.com/kvothe-assistant/avalanche-intelligence-skill
+**Version:** 1.0.0
+**Status:** Production-Ready ✅
+
+---
+
+## 📝 Quick Reference
 
 ```bash
-# Common commands
-avalanche-intelligence init              # Initialize
-avalanche-intelligence test              # Test install
-avalanche-intelligence status            # System status
-avalanche-intelligence scan --hours 24  # Collect data
-avalanche-intelligence search "query"     # Search
-avalanche-intelligence report             # Generate report
-avalanche-intelligence watch --daemon    # Monitor
+# Installation
+git clone https://github.com/kvothe-assistant/avalanche-intelligence-skill
+cd avalanche-intelligence-skill
+pip install -r requirements.txt
+python -m avalanche_intelligence init
 
 # Configuration
 config/config.yaml                     # Main config
@@ -519,10 +514,20 @@ data/raw/                            # Raw collected data
 data/processed/                       # Processed data
 data/vector_db/                        # ChromaDB database
 data/documents/                        # SQLite database
+
+# CLI Commands
+avalanche-intelligence init              # Initialize
+avalanche-intelligence test              # Test install
+avalanche-intelligence status            # System status
+avalanche-intelligence scan --hours 24  # Collect data
+avalanche-intelligence search "query"     # Search
+avalanche-intelligence report             # Generate report
+avalanche-intelligence watch --daemon    # Monitor
 ```
 
 ---
 
 **Created:** 2026-02-21
+**Updated:** 2026-02-21 10:45 GMT+1
 **Version:** 1.0.0
 **Status:** Production-Ready ✅
