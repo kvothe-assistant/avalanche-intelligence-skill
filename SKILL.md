@@ -1,533 +1,402 @@
 # Avalanche Intelligence Skill
 
-## ⚠️ IMPORTANT: This is a **Standalone Project**
+## ⚠️ IMPORTANT: This is Kvothe's Intelligence Tool
 
-This is **NOT** a regular OpenClaw skill to be used in-place. The Avalanche Intelligence tool has its own **standalone repository** and should be cloned separately.
+This is **NOT** a tool for Gokcan to use directly. This is **Kvothe's** intelligence gathering system that I use to prepare briefings and reports for Gokcan about the Avalanche blockchain ecosystem.
 
 ---
 
-## 📦 Installation (Choose Your Method)
+## 🎯 Purpose
 
-### Method 1: Standalone Project (Recommended)
+The Avalanche Intelligence skill provides **Kvothe** with comprehensive data collection and analysis capabilities for the Avalanche blockchain ecosystem. Kvothe uses this tool to:
 
-Clone and install as an independent project:
+- Monitor Avalanche developments across multiple sources
+- Analyze trends, sentiment, and key events
+- Prepare detailed briefings for Gokcan
+- Track ecosystem health and momentum
+- Identify important signals and anomalies
 
-```bash
-# Clone from GitHub
-git clone https://github.com/kvothe-assistant/avalanche-intelligence-skill.git
-cd avalanche-intelligence-skill
+---
 
-# Install dependencies
-pip install -r requirements.txt
+## 🔄 Workflow
 
-# Initialize configuration
-python -m avalanche_intelligence init
+```
+Gokcan          Kvothe (AI)              Avalanche Intelligence
+     │                    │                              │
+     │ "Briefing on      │                              │
+     │  Avalanche"       │                              │
+     ├────────────────────►                              │
+     │                    │                              │
+     │                    │  scan --hours 24             │
+     │                    ├──────────────────────────────►
+     │                    │                              │
+     │                    │  Collect from Twitter, Reddit│
+     │                    │  GitHub, on-chain, etc.     │
+     │                    │                              │
+     │                    │  Analyze sentiment, trends  │
+     │                    │  Extract entities, detect   │
+     │                    │  spikes and anomalies       │
+     │                    │                              │
+     │                    │◄──────────────────────────────┤
+     │                    │  Raw data + analysis         │
+     │                    │                              │
+     │                    │  Synthesize into briefing    │
+     │                    │                              │
+     │◄────────────────────┤                              │
+     │ "Here's your        │                              │
+     │  briefing: ..."     │                              │
 ```
 
-### Method 2: As OpenClaw Integration (Optional)
+---
 
-Use it through your OpenClaw installation:
+## 📋 What Kvothe Can Do With This Skill
 
+### 1. Daily Briefings
+**Gokcan asks:** "Give me a briefing on Avalanche"
+
+**Kvothe does:**
 ```bash
-# Navigate to workspace
-cd /home/kvothe/.openclaw/workspace/skills
-
-# Clone into skills directory
-git clone https://github.com/kvothe-assistant/avalanche-intelligence-skill.git avalanche-intelligence
-
-# Install
-cd avalanche-intelligence
-pip install -e .
-
-# Use via CLI
 avalanche-intelligence scan --hours 24
+avalanche-intelligence report --timeframe 24h
 ```
 
-**Note:** When using as an OpenClaw skill, the tool is still a standalone application with its own configuration and data directories.
+**Kvothe delivers:**
+- Key developments in last 24h
+- Trending topics with mention counts
+- Sentiment analysis (positive/negative/neutral)
+- Notable events (new subnets, ACP proposals, partnerships)
+- Anomalies or spikes detected
 
 ---
 
-## Overview
+### 2. Topic Deep-Dive
+**Gokcan asks:** "What's happening with Spruce testnet?"
 
-The **Avalanche Intelligence** project is a **standalone Python application** that provides real-time monitoring, analysis, and intelligence reporting on the Avalanche blockchain ecosystem.
+**Kvothe does:**
+```bash
+avalanche-intelligence search "spruce testnet" --deep
+```
 
-It can be used with OpenClaw, but it operates as an **independent tool** with its own lifecycle, dependencies, and configuration.
-
-This project aggregates data from multiple sources:
-
-- **Social:** Twitter/X, Reddit, Discord
-- **News:** RSS feeds from crypto outlets
-- **Development:** GitHub repositories and events
-- **On-chain:** Avalanche C-Chain blocks and transactions
-- **Analysis:** Multi-model sentiment, entity extraction, trend detection
+**Kvothe delivers:**
+- All recent mentions across sources
+- Sentiment breakdown
+- Key influencers discussing it
+- Timeline of major announcements
+- Related projects/partners
 
 ---
 
-## 📊 Project Structure
+### 3. Trend Analysis
+**Gokcan asks:** "What trends are emerging in Avalanche?"
 
-The Avalanche Intelligence project has a **standalone architecture** with:
+**Kvothe does:**
+```bash
+avalanche-intelligence scan --hours 168  # 1 week
+avalanche-intelligence report --timeframe 7d
+```
 
-### Core Components
-- **CLI Interface:** 7 commands (init, test, scan, search, report, status, watch)
-- **Intelligence Engine:** Coordinates all collectors and analyzers
-- **Configuration System:** YAML-based with environment variable support
-
-### Data Layer (6 Collectors)
-- **Twitter** - API v2 with keyword/account monitoring
-- **Reddit** - PRAW with multi-subreddit support
-- **Discord** - Real-time bot with webhook alerts
-- **GitHub** - REST API with event tracking
-- **RSS** - Multi-feed aggregator
-- **On-chain** - Avalanche C-Chain RPC integration
-
-### Processing Layer (4 Analyzers)
-- **Sentiment Analyzer** - Multi-model (VADER, FinBERT, LLM)
-- **Entity Extractor** - Named entity recognition + Avalanche ecosystem
-- **Trend Detector** - Spike detection, momentum, anomaly detection
-- **Deduplicator** - Vector similarity with ChromaDB
-
-### Storage Layer (3 Backends)
-- **Vector Database** - ChromaDB for semantic search
-- **Time-Series Database** - InfluxDB for metrics
-- **Document Store** - SQLite for structured data
-
-### Alert Layer (2 Components)
-- **Alert Manager** - Rule-based triggering and routing
-- **Discord Notifier** - Webhook-based alerts with rich embeds
+**Kvothe delivers:**
+- Topics with momentum (3x+ increase)
+- Emerging projects/protocols
+- Sentiment shifts over time
+- Correlation between events
+- Predictions based on patterns
 
 ---
 
-## 🚀 Quick Start
+### 4. On-Chain Intelligence
+**Gokcan asks:** "Any interesting on-chain activity?"
 
-### Step 1: Clone and Install
-
+**Kvothe does:**
 ```bash
-# Clone from GitHub
-git clone https://github.com/kvothe-assistant/avalanche-intelligence-skill.git
-cd avalanche-intelligence-skill
-
-# Install dependencies
-pip install -r requirements.txt
+avalanche-intelligence scan --sources onchain --hours 24
 ```
 
-### Step 2: Configure
+**Kvothe delivers:**
+- Large transactions (>100 AVAX)
+- New contract deployments
+- Address clustering patterns
+- Gas usage anomalies
+- Notable wallet movements
 
+---
+
+### 5. Event Monitoring
+**Gokcan asks:** "Monitor for ACP proposals"
+
+**Kvothe does:**
 ```bash
-# Initialize configuration
-python -m avalanche_intelligence init
-
-# Edit config with your API keys
-nano config/config.yaml
+avalanche-intelligence search "acp proposal" --source github
+avalanche-intelligence watch --daemon --interval 900
 ```
 
-### Step 3: Run
+**Kvothe delivers:**
+- Real-time alerts when new proposals appear
+- Historical context on similar proposals
+- Community sentiment on GitHub
+- Related discussions on Twitter/Reddit
 
+---
+
+## 🎯 Briefing Formats
+
+### Standard Briefing
+```
+📊 **Avalanche Daily Briefing - Feb 21, 2026**
+
+**Key Developments:**
+1. Spruce testnet launched (347 mentions, +180% vs yesterday)
+2. New ACP-123 proposal submitted
+3. FUSD stablecoin integration announced
+
+**Trending Topics:**
+- "Evergreen" (289 mentions, sentiment: 0.72)
+- "Subnet migration" (156 mentions, sentiment: 0.68)
+- "Institutional RWA" (98 mentions, sentiment: 0.81)
+
+**Sentiment Overview:**
+- Overall: 0.71 (positive)
+- Twitter: 0.73 | Reddit: 0.69 | GitHub: 0.75
+
+**Notable Events:**
+- 🔥 3x spike in "institutional" mentions
+- ⚠️ Anomaly detected: Unusual on-chain activity (342 large txs)
+- 🚀 New project: Project-X launched on subnet
+
+**Recommendations:**
+- Monitor Spruce testnet adoption closely
+- Track ACP-123 community feedback
+- Watch institutional RWA momentum
+```
+
+---
+
+### Executive Summary
+```
+🎯 **Avalanche Executive Summary**
+
+**Health Score:** 8.2/10 (↑ from 7.9 yesterday)
+
+**Top 3 Insights:**
+1. Spruce testnet generating significant buzz (3x spike)
+2. Institutional interest at all-time high
+3. New subnet proposals increasing ecosystem diversity
+
+**Risk Signals:**
+- None detected (sentiment stable)
+
+**Opportunity Signals:**
+- RWA tokenization gaining momentum
+- DeFi protocols expanding to subnets
+
+**Action Items:**
+- Track Spruce testnet progress
+- Monitor institutional partnership announcements
+```
+
+---
+
+### Technical Briefing
+```
+🔧 **Avalanche Technical Intelligence**
+
+**Protocol Updates:**
+- Teleporter v2.3 released
+- Gas optimization in latest AvalancheGo
+- New subnet template for EVM chains
+
+**On-Chain Metrics:**
+- TPS: 4,500 (↑12%)
+- Active addresses: 284,000 (↑8%)
+- TVL: $8.2B (↑3.2%)
+
+**Developer Activity:**
+- 47 commits to avalanche-labs/* repos
+- 12 new subnet proposals
+- 3 major protocol upgrades announced
+
+**Technical Sentiment:**
+- Positive on scalability improvements
+- Concerns about centralization
+- Excitement about Teleporter
+```
+
+---
+
+## 🛠️ Technical Architecture
+
+### Data Collection (6 Sources)
+- **Twitter/X:** API v2 with sentiment analysis
+- **Reddit:** Multi-subreddit monitoring
+- **Discord:** Real-time message collection
+- **GitHub:** Repository events and proposals
+- **RSS:** News aggregation from crypto outlets
+- **On-chain:** Avalanche C-Chain RPC monitoring
+
+### Analysis Pipeline (4 Layers)
+1. **Sentiment Analysis:** VADER + FinBERT + LLM composite
+2. **Entity Extraction:** spaCy + Avalanche ecosystem entities
+3. **Trend Detection:** Spike detection, momentum analysis, anomalies
+4. **Deduplication:** Vector similarity for clean data
+
+### Storage (3 Backends)
+- **ChromaDB:** Semantic search and similarity
+- **InfluxDB:** Time-series metrics
+- **SQLite:** Documents, signals, projects
+
+---
+
+## 📊 Example Commands Kvothe Uses
+
+### Morning Routine
 ```bash
-# Test installation
-python -m avalanche_intelligence test
+# Daily scan
+avalanche-intelligence scan --hours 24
 
-# Scan data (last 24 hours)
-python -m avalanche_intelligence scan --hours 24
+# Generate briefing
+avalanche-intelligence report --timeframe 24h --format markdown
+```
 
-# Search for topics
-python -m avalanche_intelligence search "spruce testnet"
+### Deep Research
+```bash
+# Search specific topic
+avalanche-intelligence search "new subnet" --deep
 
-# Generate report
-python -m avalanche_intelligence report --timeframe 24h
+# Analyze sentiment
+avalanche-intelligence scan --sources twitter,reddit --hours 168
+```
 
-# Start continuous monitoring
-python -m avalanche_intelligence watch --daemon --interval 900
+### Continuous Monitoring
+```bash
+# Start background monitoring
+avalanche-intelligence watch --daemon --interval 900
+```
+
+### Ecosystem Health
+```bash
+# Check all systems
+avalanche-intelligence status
+
+# Generate weekly report
+avalanche-intelligence report --timeframe 7d
 ```
 
 ---
 
 ## ⚙️ Configuration
 
-Edit `config/config.yaml` with your API keys:
+The skill reads configuration from:
+```
+config/config.yaml
+```
 
+Key settings:
 ```yaml
 sources:
   twitter:
     enabled: true
-    bearer_token: "${TWITTER_BEARER_TOKEN}"
-    track_keywords: ["avalanche", "avax", "subnet"]
-    follow_accounts: ["avalancheavax", "kevinsekniqi"]
-
+    track_keywords: ["avalanche", "avax", "subnet", "spruce", "evergreen"]
   reddit:
-    enabled: true
-    client_id: "${REDDIT_CLIENT_ID}"
-    client_secret: "${REDDIT_CLIENT_SECRET}"
-    subreddits: ["avalancheavax", "defi", "cryptocurrency"]
-
-  discord:
-    enabled: true
-    bot_token: "${DISCORD_BOT_TOKEN}"
-    webhook_url: "${DISCORD_WEBHOOK_URL}"
-    guilds: ["Avalanche"]
-    channels: ["announcements", "tech-talk"]
-
+    subreddits: ["avalancheavax", "defi"]
   github:
-    enabled: true
-    access_token: "${GITHUB_ACCESS_TOKEN}"
     organizations: ["avalanche-foundation", "avalanche-labs"]
-
-  rss:
-    enabled: true
-    feeds:
-      - "https://www.avax.network/blog/rss"
-      - "https://cointelegraph.com/tag/avalanche/rss"
-
   onchain:
     enabled: true
-    rpc_url: "${AVALANCHE_RPC_URL}"
+    rpc_url: "https://api.avax.network/ext/bc/C/rpc"
+
+analysis:
+  sentiment_model: "vader"
+  trend_detection: true
+  entity_extraction: true
 
 alerts:
   enabled_channels: ["discord"]
-  triggers:
-    - "trend_spike"
-    - "price_change>10%"
-    - "high_confidence"
-  min_confidence: 0.7
+  triggers: ["trend_spike", "high_confidence", "new_subnet"]
 ```
 
 ---
 
-## 🎯 CLI Commands
+## 📈 Metrics Kvothe Can Track
 
-### Core Commands
-
-```bash
-avalanche-intelligence init              # Initialize configuration
-avalanche-intelligence test              # Test installation
-avalanche-intelligence status            # Show system status
-avalanche-intelligence scan --hours 24  # Collect data
-avalanche-intelligence search "query"     # Search data
-avalanche-intelligence report             # Generate report
-avalanche-intelligence watch --daemon    # Continuous monitoring
-```
-
-### Command Options
-
-#### `scan`
-```bash
---hours N          # Hours to scan (default: 24)
---sources X,Y,Z     # Specific sources (default: all)
---output FILE      # Save scan results
-```
-
-#### `search`
-```bash
---query "text"     # Search query
---source NAME       # Filter by source (default: all)
---deep             # More results with context
-```
-
-#### `report`
-```bash
---timeframe 24h    # Time period (24h, 7d, 30d)
---format markdown    # Output format (markdown, json, html)
---output FILE      # Save report
-```
-
-#### `watch`
-```bash
---daemon           # Run as background daemon
---interval 900      # Check interval in seconds (default: 15m)
-```
-
----
-
-## 📊 Data Sources
-
-### Twitter/X
-- **API:** Twitter API v2
-- **Data:** Tweets, replies, mentions, engagement metrics
-- **Rate Limit:** 300 requests/hour (configurable)
-- **Features:** Sentiment analysis, entity extraction, influence scoring
-
-### Reddit
-- **API:** PRAW (Python Reddit API)
-- **Data:** Posts, comments, upvotes
-- **Rate Limit:** 100 requests/hour (configurable)
-- **Features:** Subreddit monitoring, flair extraction
-
-### Discord
-- **API:** Discord.py
-- **Data:** Messages, reactions, mentions
-- **Features:** Real-time listening, webhook alerts, channel filtering
-
-### GitHub
-- **API:** GitHub REST API v3
-- **Data:** Events (Push, PR, Issue, Release, etc.), repositories
-- **Features:** Organization monitoring, repository search, activity tracking
-
-### RSS Feeds
-- **Format:** RSS/Atom
-- **Data:** News articles, blog posts
-- **Features:** Multi-feed aggregation, HTML stripping, duplicate detection
-
-### On-Chain
-- **RPC:** Avalanche C-Chain
-- **Data:** Blocks, transactions, address data
-- **Features:** Real-time monitoring, transaction parsing, balance queries
-
----
-
-## 🧠 Analysis Capabilities
-
-### Sentiment Analysis
-- **Models:** VADER, FinBERT, LLM (composite scoring)
-- **Output:** Score (-1 to +1), label (positive/negative/neutral), confidence
-- **Batch Processing:** Analyze multiple texts efficiently
-
-### Entity Extraction
-- **Types:** Projects, organizations, people, technology, tokens
-- **Ecosystem:** 100+ Avalanche-specific entities pre-defined
-- **Methods:** spaCy NER, regex patterns, keyword matching
+### Ecosystem Health
+- Total mentions per day
+- Sentiment trends over time
+- Active project count
+- Developer activity (commits, PRs)
 
 ### Trend Detection
-- **Spike Detection:** Identifies sudden mention increases (3x, 5x, 10x thresholds)
-- **Momentum Analysis:** Sustained growth/decline trends over time
-- **Anomaly Detection:** Z-score based outlier detection
+- Topic momentum (3x, 5x, 10x spikes)
+- Emerging projects
+- Viral content
+- Anomaly detection
 
-### Deduplication
-- **Methods:** Exact string matching, fuzzy matching, vector similarity
-- **Threshold:** Configurable similarity threshold (default: 0.85)
-- **Backends:** Cosine similarity for vectors
+### On-Chain Metrics
+- Transaction volume
+- Active addresses
+- Gas usage patterns
+- Large transactions (>100 AVAX)
 
----
-
-## 💾 Storage Architecture
-
-### Vector Database (ChromaDB)
-- **Purpose:** Semantic search and similarity matching
-- **Use Cases:** Content deduplication, intelligent search, entity linking
-- **Path:** `data/vector_db/`
-
-### Time-Series Database (InfluxDB)
-- **Purpose:** Metrics storage and analytics
-- **Use Cases:** Trend detection, anomaly detection, time-series queries
-- **Path:** Remote server (configured)
-
-### Document Store (SQLite)
-- **Purpose:** Structured data persistence
-- **Use Cases:** Documents, signals, projects storage, full-text search
-- **Path:** `data/documents/intelligence.db`
+### Community Sentiment
+- Overall sentiment score
+- Platform-specific sentiment
+- Influencer mentions
+- Response patterns
 
 ---
 
-## 🚨 Alert Types
+## 🔧 Maintenance
 
-### Trend Spike
-Triggered when an entity's mentions spike significantly above baseline.
-
-### High Confidence
-Triggered when sentiment analysis shows extreme polarity with high confidence.
-
-### Price Change
-Triggered when token prices change by configured percentage.
-
-### ACP Proposal
-Triggered when new Avalanche Community Proposal (ACP) is detected.
-
-### New Subnet
-Triggered when a new Avalanche subnet is launched.
-
-### Institutional Partnership
-Triggered when major institution partnerships are announced.
+Kvothe maintains this skill:
+- Updates dependencies weekly
+- Monitors storage usage
+- Cleans up old data (retention: 90 days)
+- Tests API connections
+- Validates sentiment models
 
 ---
 
-## 🔧 Best Practices
+## 📚 Documentation Structure
 
-### API Keys Management
-- Store API keys in environment variables, not in config files
-- Use different tokens for different environments (dev/prod)
-- Rotate tokens regularly for security
-
-### Rate Limiting
-- Respect platform rate limits
-- Use batch operations when possible
-- Implement backoff strategies for failed requests
-
-### Storage Management
-- Set appropriate retention periods (default: 90 days)
-- Regularly clean up old data
-- Monitor database sizes and performance
-
-### Alert Thresholds
-- Adjust confidence thresholds based on use case
-- Set appropriate trigger frequencies
-- Test alert rules before production deployment
-
-### Monitoring
-- Use continuous monitoring for critical alerts
-- Monitor storage sizes and disk usage
-- Track collector uptime and error rates
-
----
-
-## 📈 Usage Examples
-
-### Example 1: Daily Monitoring
-
-```bash
-# Scan recent data
-avalanche-intelligence scan --hours 24
-
-# Generate report
-avalanche-intelligence report --timeframe 24h --format markdown --output reports/daily.md
 ```
-
-### Example 2: Trend Research
-
-```bash
-# Scan last 24 hours
-avalanche-intelligence scan --hours 24 --sources twitter,reddit
-
-# Search for specific topics
-avalanche-intelligence search "subnet launch" --deep
-```
-
-### Example 3: Continuous Monitoring
-
-```bash
-# Start watch daemon
-avalanche-intelligence watch --daemon --interval 900
-
-# Check system status
-avalanche-intelligence status
+avalanche-intelligence-skill/
+├── SKILL.md                    # This file (Kvothe's usage guide)
+├── INTEGRATION_GUIDE.md         # Technical integration details
+├── README.md                   # Project documentation
+├── CONTRIBUTING.md             # Development guidelines
+└── config/config.example.yaml  # Configuration template
 ```
 
 ---
 
-## 🐛 Troubleshooting
+## 🎯 Summary
 
-### Common Issues
+**What This Skill Does:**
+- Provides Kvothe with comprehensive Avalanche intelligence
+- Collects data from 6 sources automatically
+- Analyzes sentiment, trends, and anomalies
+- Stores data for historical analysis
+- Generates briefings and reports
 
-**"VADER not installed"**
-```bash
-pip install vaderSentiment
-```
+**How Gokcan Uses It:**
+- Asks Kvothe for briefings ("Give me Avalanche briefing")
+- Requests specific research ("What's happening with Spruce?")
+- Wants periodic updates ("Weekly ecosystem report")
+- Needs specific analysis ("On-chain activity this week")
 
-**"ChromaDB error"**
-```bash
-pip install chromadb
-```
-
-**"spaCy model not found"**
-```bash
-python -m spacy download en_core_web_sm
-```
-
-**"Discord bot token invalid"**
-- Verify bot token in Discord Developer Portal
-- Ensure bot has necessary permissions
-- Check bot is not rate limited
-
-**"Rate limit exceeded"**
-- Increase interval between scans
-- Reduce number of tracked accounts/keywords
-- Use API token with higher limits
+**What Kvothe Delivers:**
+- Clear, actionable briefings
+- Trend analysis with insights
+- Sentiment breakdowns
+- Anomaly alerts
+- Technical intelligence
 
 ---
 
-## 📋 Configuration Reference
-
-### Analysis Configuration
-```yaml
-analysis:
-  sentiment_model: "vader"      # Options: vader, finbert, llm
-  entity_extraction: true
-  trend_detection: true
-  deduplication_threshold: 0.85
-```
-
-### Storage Configuration
-```yaml
-storage:
-  retention_days: 90
-  vector_db_path: "data/vector_db"
-  document_store_path: "data/documents"
-```
-
-### Alert Configuration
-```yaml
-alerts:
-  enabled_channels: ["discord"]
-  triggers: ["trend_spike", "high_confidence", ...]
-  min_confidence: 0.7
-```
-
----
-
-## 🤝 Contributing
-
-To extend the project:
-
-1. **Add a new collector:** Inherit from `BaseCollector` and implement `collect()` and `search()`
-2. **Add a new analyzer:** Create a new class in `analyzers/` directory
-3. **Add a new storage backend:** Implement interface in `storage/` directory
-4. **Update tests:** Add test cases for new functionality
-
-See `CONTRIBUTING.md` for detailed guidelines.
-
----
-
-## 📚 Documentation
-
-- **Full Documentation:** https://github.com/kvothe-assistant/avalanche-intelligence-skill
-- **API Docs:** See inline docstrings in each module
-- **Configuration Examples:** `config/config.example.yaml`
-
----
-
-## 📜 License
-
-MIT License - See `LICENSE` file
-
----
-
-## 🔗 Repository
-
-**URL:** https://github.com/kvothe-assistant/avalanche-intelligence-skill
-**Version:** 1.0.0
-**Status:** Production-Ready ✅
-
----
-
-## 📝 Quick Reference
-
-```bash
-# Installation
-git clone https://github.com/kvothe-assistant/avalanche-intelligence-skill
-cd avalanche-intelligence-skill
-pip install -r requirements.txt
-python -m avalanche_intelligence init
-
-# Configuration
-config/config.yaml                     # Main config
-config/config.example.yaml             # Template
-
-# Data locations
-data/raw/                            # Raw collected data
-data/processed/                       # Processed data
-data/vector_db/                        # ChromaDB database
-data/documents/                        # SQLite database
-
-# CLI Commands
-avalanche-intelligence init              # Initialize
-avalanche-intelligence test              # Test install
-avalanche-intelligence status            # System status
-avalanche-intelligence scan --hours 24  # Collect data
-avalanche-intelligence search "query"     # Search
-avalanche-intelligence report             # Generate report
-avalanche-intelligence watch --daemon    # Monitor
-```
+**This is Kvothe's intelligence tool for keeping Gokcan informed about the Avalanche ecosystem.** 🏔️
 
 ---
 
 **Created:** 2026-02-21
-**Updated:** 2026-02-21 10:45 GMT+1
-**Version:** 1.0.0
+**Updated:** 2026-02-21 11:15 GMT+1
+**Version:** 2.0.0 - Corrected for Kvothe's usage
 **Status:** Production-Ready ✅
