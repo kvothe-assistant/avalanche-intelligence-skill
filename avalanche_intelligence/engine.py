@@ -44,29 +44,53 @@ class IntelligenceEngine:
 
     def _init_collectors(self):
         """Initialize data collectors based on config."""
-        # Twitter
-        if self.config.twitter.enabled and self.config.twitter.bearer_token:
-            self.collectors["twitter"] = TwitterCollector(self.config.twitter)
+        # Twitter (using fxtwitter - no auth needed!)
+        if self.config.twitter.enabled:
+            try:
+                from .collectors.twitter_fxtwitter import TwitterCollector
+                self.collectors["twitter"] = TwitterCollector(self.config.twitter)
+            except Exception as e:
+                print(f"Warning: Twitter collector not available - {e}")
 
         # Reddit
         if self.config.reddit.enabled and self.config.reddit.client_id:
-            self.collectors["reddit"] = RedditCollector(self.config.reddit)
+            try:
+                from .collectors.reddit import RedditCollector
+                self.collectors["reddit"] = RedditCollector(self.config.reddit)
+            except Exception as e:
+                print(f"Warning: Reddit collector not available - {e}")
 
         # Discord
         if self.config.discord.enabled and self.config.discord.bot_token:
-            self.collectors["discord"] = DiscordCollector(self.config.discord)
+            try:
+                from .collectors.discord import DiscordCollector
+                self.collectors["discord"] = DiscordCollector(self.config.discord)
+            except Exception as e:
+                print(f"Warning: Discord collector not available - {e}")
 
         # GitHub
         if self.config.github.enabled and self.config.github.access_token:
-            self.collectors["github"] = GitHubCollector(self.config.github)
+            try:
+                from .collectors.github import GitHubCollector
+                self.collectors["github"] = GitHubCollector(self.config.github)
+            except Exception as e:
+                print(f"Warning: GitHub collector not available - {e}")
 
         # RSS
         if self.config.rss.enabled and self.config.rss.feeds:
-            self.collectors["rss"] = RSSCollector(self.config.rss)
+            try:
+                from .collectors.rss import RSSCollector
+                self.collectors["rss"] = RSSCollector(self.config.rss)
+            except Exception as e:
+                print(f"Warning: RSS collector not available - {e}")
 
         # On-chain
         if self.config.onchain.enabled and self.config.onchain.rpc_url:
-            self.collectors["onchain"] = OnchainCollector(self.config.onchain)
+            try:
+                from .collectors.onchain import OnchainCollector
+                self.collectors["onchain"] = OnchainCollector(self.config.onchain)
+            except Exception as e:
+                print(f"Warning: On-chain collector not available - {e}")
 
     def _init_analyzers(self):
         """Initialize analysis components."""
