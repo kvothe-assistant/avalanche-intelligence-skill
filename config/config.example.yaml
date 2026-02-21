@@ -1,0 +1,76 @@
+# Avalanche Intelligence Configuration
+# Copy this to config/config.yaml and fill in your API keys
+
+sources:
+  twitter:
+    enabled: false
+    bearer_token: "${TWITTER_BEARER_TOKEN}"
+    track_keywords:
+      - "avalanche"
+      - "avax"
+      - "subnet"
+      - "avalanche9000"
+      - "acp"
+      - "rwa"
+      - "tokenization"
+    follow_accounts:
+      - "avalancheavax"
+      - "kevinsekniqi"
+      - "emin"
+      - "avax_insider"
+    rate_limit_per_hour: 300
+
+  reddit:
+    enabled: false
+    client_id: "${REDDIT_CLIENT_ID}"
+    client_secret: "${REDDIT_CLIENT_SECRET}"
+    user_agent: "avalanche-intelligence/0.1.0"
+    subreddits:
+      - "avalancheavax"
+      - "defi"
+      - "cryptocurrency"
+      - "Web3Gaming"
+    rate_limit_per_hour: 100
+
+  discord:
+    enabled: false
+    bot_token: "${DISCORD_BOT_TOKEN}"
+    webhook_url: "${DISCORD_WEBHOOK_URL}"
+    guilds:
+      - "Avalanche"
+    channels:
+      - "announcements"
+      - "tech-talk"
+
+  rss:
+    enabled: true
+    feeds:
+      - "https://www.avax.network/blog/rss"
+      - "https://cointelegraph.com/tag/avalanche/rss"
+      - "https://coindesk.com/arc/outboundfeeds/rss/tag/avalanche"
+    rate_limit_per_hour: 20
+
+storage:
+  retention_days: 90
+  vector_db_path: "data/vector_db"
+  document_store_path: "data/documents"
+  # Optional: time_series_db_path: "data/time_series"
+
+analysis:
+  sentiment_model: "vader"  # Options: vader, finbert, llm
+  entity_extraction: true
+  trend_detection: true
+  deduplication_threshold: 0.85
+
+alerts:
+  enabled_channels:
+    - "discord"
+    # - "signal"  # If Signal integration is added
+  triggers:
+    - "price_change>10%"
+    - "acp_proposal"
+    - "new_subnet"
+    - "institutional_partnership"
+    - "rwa_launch"
+    - "high_confidence"
+  min_confidence: 0.7
